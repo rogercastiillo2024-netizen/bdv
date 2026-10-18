@@ -1,6 +1,6 @@
 {
-  "name": "Banco Universal Digital",
-  "short_name": "Banco Digital",
+  "name": "Bdv",
+  "short_name": "Bdv.fake",
   "start_url": "https://rogercastiillo2024-netizen.github.io/Banco-Universal/",
   "display": "standalone",
   "background_color": "#020617",
