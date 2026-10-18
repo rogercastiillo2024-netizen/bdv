@@ -1,0 +1,20 @@
+{
+  "name": "Banco Universal Digital",
+  "short_name": "Banco Digital",
+  "start_url": "https://rogercastiillo2024-netizen.github.io/Banco-Universal/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "icon.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "icon2.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Universal - DIGITAL ONLINE</title>
+
+    <!-- Configuración PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020617">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#020617] text-white min-h-screen font-sans antialiased flex flex-col justify-between">
+
+    <!-- BARRA SUPERIOR DE NAVEGACIÓN -->
+    <header class="w-full bg-[#070e27] border-b border-slate-800 py-3 px-4 flex items-center justify-between shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-amber-500 text-slate-950 font-black rounded-xl flex items-center justify-center text-lg shadow-md shadow-amber-500/20">
+                BU
+            </div>
+            <div>
+                <h1 class="text-base font-bold tracking-tight text-white leading-none">Banco Universal</h1>
+                <p class="text-[10px] text-amber-400 font-semibold tracking-widest mt-1">DIGITAL ONLINE</p>
+            </div>
+        </div>
+
+        <!-- Botón para Cerrar Sesión (Visible solo al estar logueado) -->
+        <button id="btn-logout" onclick="cerrarSesion()" class="hidden text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-1.5 px-3 rounded-lg border border-slate-700 transition-colors">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="w-full max-w-md mx-auto p-4 flex-grow flex flex-col justify-center my-auto">
+
+        <!-- ================= PANTALLA 1: LOGIN ================= -->
+        <div id="seccion-login" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+            <h2 class="text-xl font-black text-center text-white mb-1">Banca en Línea</h2>
+            <p class="text-xs text-slate-400 text-center mb-6">Ingresa tus datos para acceder a tu cuenta protegida</p>
+
+            <form id="form-login" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Usuario</label>
+                    <input type="text" id="login-usuario" placeholder="admin" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
+                    <input type="password" id="login-clave" placeholder="••••••••" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/10">
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <div class="text-center mt-5 pt-4 border-t border-slate-800 text-xs text-slate-400">
+                ¿No tienes cuenta? <button onclick="mostrarVista('registro')" class="text-amber-400 font-bold hover:underline">Regístrate aquí</button>
+            </div>
+        </div>
+
+        <!-- ================= PANTALLA 2: REGISTRO ================= -->
+        <div id="seccion-registro" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-sm hidden">
+            <h2 class="text-xl font-black text-center text-white mb-1">Registro de Usuario</h2>
+            <p class="text-xs text-slate-400 text-center mb-6">Crea tu cuenta e ingresa el fondo inicial</p>
+
+            <form id="form-registro" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre Completo</label>
+                    <input type="text" id="reg-nombre" placeholder="Juan Pérez" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Usuario</label>
+                    <input type="text" id="reg-usuario" placeholder="juan123" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
+                    <input type="password" id="reg-clave" placeholder="••••••••" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-amber-400 mb-1">Fondo / Saldo Inicial (Bs)</label>
+                    <input type="number" step="0.01" id="reg-saldo" placeholder="2500.00" required class="w-full bg-slate-950 border border-amber-500/50 rounded-xl p-2.5 text-xs text-white font-bold focus:outline-none focus:border-amber-400">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/10 mt-2">
+                    Crear Cuenta
+                </button>
+            </form>
+
+            <div class="text-center mt-5 pt-4 border-t border-slate-800 text-xs text-slate-400">
+                ¿Ya tienes cuenta? <button onclick="mostrarVista('login')" class="text-amber-400 font-bold hover:underline">Inicia Sesión</button>
+            </div>
+        </div>
+
+        <!-- ================= PANTALLA 3: DASHBOARD / OPERACIONES ================= -->
+        <div id="seccion-dashboard" class="space-y-5 hidden">
+            
+            <!-- TARJETA DE SALDO Y RECARGA -->
+            <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-[#070e27] border border-slate-800 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs text-slate-400 font-medium">Hola, <strong id="usuario-nombre" class="text-white">Usuario</strong></span>
+                    <button onclick="editarFondo()" class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-semibold hover:bg-amber-500/30">
+                        ⚙️ Ajustar Saldo
+                    </button>
+                </div>
+                
+                <div class="text-2xl font-black text-white tracking-tight mb-3">
+                    <span id="saldo-display">0,00</span> <span class="text-sm font-bold text-amber-400">Bs</span>
+                </div>
+                
+                <div class="flex justify-between items-center text-[11px] text-slate-400 pt-2 border-t border-slate-800/80">
+                    <span>Cuenta Corriente</span>
+                    <span class="font-mono text-slate-300">0102-****-4916</span>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE PAGO MÓVIL -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-sm">
+                <div class="flex items-center space-x-2 mb-4 pb-2 border-b border-slate-800">
+                    <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
+                    <h2 class="text-base font-bold text-slate-200">Realizar Pago Móvil</h2>
+                </div>
+                
+                <form id="form-pago" class="space-y-3.5">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Cédula / RIF</label>
+                        <input type="text" id="input-cedula" placeholder="11273914" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Teléfono Destino</label>
+                        <input type="tel" id="input-telefono" placeholder="04123311675" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Banco Destino</label>
+                        <select id="select-banco" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                             <option value="0102 - Banco de Venezuela">0102 - Banco de Venezuela </option>
+                                <option value="0104- Banco Venezolano de Credito">0104 - Banco Venezolano de Credito</option>
+                                <option value="0105 - Banco Mercantil ">0105 - Banco Mercantil </option>
+                                <option value="0108 - Banco BBVA Provincial ">0108 - Banco Provincial </option>
+                                <option value="0110 - Banco Universal Digital ">0110 - Banco Universal Digital</option>
+                                <option value="0114- Bancaribe">0114 - Bancaribe</option>
+                                <option value="0134 - Banesco Sim">0134 - Banesco </option>
+                                <option value="0163 - Banco del Tesoro">0163 - Banco del Tesoro</option>
+                                <option value="0172 - Bancamiga">0172 - Bancamiga</option>
+                                <option value="0174 - Banplus">0174 - Banplus</option>
+                                <option value="0175 - Banco Digital de los Trabajadores">0175 - Banco Digital de los Trabajadores </option>
+                                <option value="0191 - Banco Nacional De Credito">0191 - Banco Nacional de Credito </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Monto (Bs)</label>
+                        <input type="number" step="0.01" id="input-monto" placeholder="550.20" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Concepto</label>
+                        <input type="text" id="input-concepto" placeholder="agosto" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/10">
+                        Procesar Pago
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="text-center py-3 text-[10px] text-slate-600 border-t border-slate-900">
+        Banco Universal Digital &copy; 2026 - Todos los derechos reservados.
+    </footer>
+
+
+    <!-- ================= MODAL DEL COMPROBANTE DE PAGO (PANTALLA COMPLETA) ================= -->
+    <div id="modal-comprobante" class="fixed inset-0 z-50 bg-[#e6e6e6] overflow-y-auto hidden">
+        
+        <!-- Contenedor adaptado a pantalla completa en móviles y centrado en PC -->
+        <div class="w-full min-h-screen max-w-[420px] mx-auto bg-[#e6e6e6] p-4 flex flex-col justify-between font-sans text-gray-800">
+          
+          <div>
+            <!-- Encabezado del Comprobante -->
+            <div class="flex items-center justify-between py-2 mb-2">
+              <button onclick="cerrarRecibo()" class="text-black hover:opacity-75 transition-opacity p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </button>
+              <h1 class="text-lg font-bold text-black tracking-tight">Comprobante de operación</h1>
+              <button class="text-black hover:opacity-75 transition-opacity p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- LOGOTIPO TRICOLOR Y CHECK -->
+            <div class="flex flex-col items-center mb-4 pt-2">
+              <img src="logo.png" alt="Logo Pago Móvil" class="w-14 h-14 object-contain mb-1">
+              <h2 class="text-base font-semibold text-gray-900">PagomóvilBDV Personas</h2>
+              
+              <div class="w-7 h-7 bg-[#c8102e] rounded-full flex items-center justify-center mt-2 text-white shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Monto Formateado (ej: 700,00Bs) -->
+            <div class="bg-[#dcdcdc] rounded-xl py-3 text-center mb-6 shadow-inner">
+              <span class="text-base font-semibold text-gray-900" id="recibo-monto">0,00Bs</span>
+            </div>
+
+            <!-- Detalles de la Transacción -->
+            <div class="space-y-3.5 text-sm px-1">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Fecha:</span>
+                <span class="text-gray-800" id="recibo-fecha">--/--/----</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Operación:</span>
+                <div class="flex items-center space-x-1">
+                  <span class="text-gray-800 font-mono tracking-tight" id="recibo-referencia">000000000000</span>
+                  <button class="text-red-600 hover:text-red-800 p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Identificación:</span>
+                <span class="text-gray-800" id="recibo-cedula">---</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Origen:</span>
+                <span class="text-gray-800" id="recibo-origen">0102*******</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Destino:</span>
+                <span class="text-gray-800" id="recibo-destino">---</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Banco:</span>
+                <span class="text-gray-800 text-right truncate max-w-[200px]" id="recibo-banco">---</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-gray-900">Concepto:</span>
+                <span class="text-gray-800 truncate max-w-[200px]" id="recibo-concepto">---</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón Volver (Alineado al final de la pantalla) -->
+          <div class="flex justify-center my-6">
+            <button onclick="cerrarRecibo()" class="p-2 text-red-600 hover:text-red-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+    </div>
+
+
+    <!-- LÓGICA JAVASCRIPT Y BASE DE DATOS LOCAL -->
+    <script>
+        // --- BASE DE DATOS LOCAL (LOCALSTORAGE) ---
+        let usuariosDB = JSON.parse(localStorage.getItem('bu_usuarios')) || {};
+        let usuarioActivo = localStorage.getItem('bu_sesion_activa') || null;
+
+        // Cambiar entre Vistas (login, registro, dashboard)
+        function mostrarVista(vista) {
+            document.getElementById('seccion-login').classList.add('hidden');
+            document.getElementById('seccion-registro').classList.add('hidden');
+            document.getElementById('seccion-dashboard').classList.add('hidden');
+            document.getElementById('btn-logout').classList.add('hidden');
+
+            if (vista === 'login') {
+                document.getElementById('seccion-login').classList.remove('hidden');
+            } else if (vista === 'registro') {
+                document.getElementById('seccion-registro').classList.remove('hidden');
+            } else if (vista === 'dashboard') {
+                document.getElementById('seccion-dashboard').classList.remove('hidden');
+                document.getElementById('btn-logout').classList.remove('hidden');
+                cargarDatosDashboard();
+            }
+        }
+
+        // --- PROCESO DE REGISTRO ---
+        document.getElementById('form-registro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('reg-nombre').value;
+            const usuario = document.getElementById('reg-usuario').value.trim();
+            const clave = document.getElementById('reg-clave').value;
+            const saldo = parseFloat(document.getElementById('reg-saldo').value) || 0;
+
+            if (usuariosDB[usuario]) {
+                alert('El usuario ya existe. Intenta con otro.');
+                return;
+            }
+
+            usuariosDB[usuario] = {
+                nombre: nombre,
+                clave: clave,
+                saldo: saldo
+            };
+
+            localStorage.setItem('bu_usuarios', JSON.stringify(usuariosDB));
+            alert('¡Cuenta creada con éxito! Ahora inicia sesión.');
+            document.getElementById('form-registro').reset();
+            mostrarVista('login');
+        });
+
+        // --- PROCESO DE LOGIN ---
+        document.getElementById('form-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const usuario = document.getElementById('login-usuario').value.trim();
+            const clave = document.getElementById('login-clave').value;
+
+            if (usuariosDB[usuario] && usuariosDB[usuario].clave === clave) {
+                usuarioActivo = usuario;
+                localStorage.setItem('bu_sesion_activa', usuario);
+                mostrarVista('dashboard');
+                document.getElementById('form-login').reset();
+            } else {
+                alert('Usuario o contraseña incorrectos.');
+            }
+        });
+
+        // --- CERRAR SESIÓN ---
+        function cerrarSesion() {
+            usuarioActivo = null;
+            localStorage.removeItem('bu_sesion_activa');
+            mostrarVista('login');
+        }
+
+        // --- CARGAR DATOS DEL DASHBOARD ---
+        function cargarDatosDashboard() {
+            if (!usuarioActivo || !usuariosDB[usuarioActivo]) return;
+            
+            const user = usuariosDB[usuarioActivo];
+            document.getElementById('usuario-nombre').innerText = user.nombre;
+            document.getElementById('saldo-display').innerText = user.saldo.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // --- AJUSTAR / EDITAR FONDO MANUALMENTE ---
+        function editarFondo() {
+            if (!usuarioActivo) return;
+            const nuevoFondo = prompt('Ingresa el nuevo saldo disponible (Bs):', usuariosDB[usuarioActivo].saldo);
+            if (nuevoFondo !== null && !isNaN(parseFloat(nuevoFondo))) {
+                usuariosDB[usuarioActivo].saldo = parseFloat(nuevoFondo);
+                localStorage.setItem('bu_usuarios', JSON.stringify(usuariosDB));
+                cargarDatosDashboard();
+            }
+        }
+
+        // --- PROCESAR PAGO MÓVIL ---
+        document.getElementById('form-pago').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const monto = parseFloat(document.getElementById('input-monto').value);
+            const cedula = document.getElementById('input-cedula').value;
+            const telefono = document.getElementById('input-telefono').value;
+            const banco = document.getElementById('select-banco').value;
+            const concepto = document.getElementById('input-concepto').value;
+
+            if (isNaN(monto) || monto <= 0) {
+                alert('Ingresa un monto válido.');
+                return;
+            }
+
+            if (monto > usuariosDB[usuarioActivo].saldo) {
+                alert('Saldo insuficiente en la cuenta.');
+                return;
+            }
+
+            // Restar monto del saldo del usuario
+            usuariosDB[usuarioActivo].saldo -= monto;
+            localStorage.setItem('bu_usuarios', JSON.stringify(usuariosDB));
+            cargarDatosDashboard();
+
+            // Formatear monto con dos decimales exactos (ej. 700,00Bs)
+            const montoFormateado = monto.toLocaleString('es-VE', { 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 2 
+            });
+
+            // Rellenar comprobante
+            document.getElementById('recibo-monto').innerText = `${montoFormateado}Bs`;
+            document.getElementById('recibo-fecha').innerText = new Date().toLocaleDateString('es-VE');
+            document.getElementById('recibo-referencia').innerText = '00' + Math.floor(1000000000 + Math.random() * 9000000000);
+            document.getElementById('recibo-cedula').innerText = cedula;
+            document.getElementById('recibo-destino').innerText = telefono;
+            document.getElementById('recibo-banco').innerText = banco;
+            document.getElementById('recibo-concepto').innerText = concepto;
+
+            // Mostrar modal
+            document.getElementById('modal-comprobante').classList.remove('hidden');
+
+            document.getElementById('form-pago').reset();
+        });
+
+        // Ocultar recibo
+        function cerrarRecibo() {
+            document.getElementById('modal-comprobante').classList.add('hidden');
+        }
+
+        // --- INICIALIZAR ESTADO DE LA APP ---
+        if (usuarioActivo && usuariosDB[usuarioActivo]) {
+            mostrarVista('dashboard');
+        } else {
+            mostrarVista('login');
+        }
+
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW activo', reg))
+                .catch(err => console.error('Error SW', err));
+        }
+    </script>
+</body>
+</html>
