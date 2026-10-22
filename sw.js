@@ -1,4 +1,4 @@
-const CACHE_NAME = 'banco-digital-v2';
+const CACHE_NAME = 'banco-digital-v3';
 const urlsToCache = [
   './',
   './index.html',
